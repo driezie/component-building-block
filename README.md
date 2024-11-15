@@ -1,6 +1,6 @@
-> _Fork_ deze deeltaak en ga aan de slag. 
-Onderstaande outline ga je gedurende deze taak in jouw eigen GitHub omgeving uitwerken. 
-De instructie vind je in: [docs/INSTRUCTIONS.md](docs/INSTRUCTIONS.md)
+
+[Open het Figma ontwerp](https://www.figma.com/design/TG6g3GMpZ5nYlFsLfFzuNR/Mediahuis-Chart?node-id=0-1&t=lQFmNtaVVOmjfzsq-1)
+
 
 # Component Building Block
 
@@ -9,4 +9,3 @@ Ontwerp en bouw voor de opdrachtgever een robuust, goed werkend component, waari
 ## Licentie
 
 This project is licensed under the terms of the [MIT license](./LICENSE).
-
