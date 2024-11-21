@@ -1,9 +1,9 @@
 <script>
-    import Schedule from "../lib/guide/schedule.svelte";
+  import Schedule from "../lib/molecule/schedule.svelte";
 
-    export let data;
+  export let data;
 </script>
 
 <main>
-    <Schedule {data}/>
+  <Schedule {data} />
 </main>
