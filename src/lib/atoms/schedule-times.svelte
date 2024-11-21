@@ -7,7 +7,6 @@
     <div
       class="schedule-time-outer"
       style="--start: {i * 50}; --end: {i * 50 + 50};"
-      class:text-right={i === 23}
     >
       <div class="schedule-times__time">
         {i === 23 ? "23:59" : i < 10 ? `0${i}:00` : `${i}:00`}
@@ -35,25 +34,28 @@
     position: relative;
     grid-column-start: calc(var(--start) + 1);
     grid-column-end: calc(var(--end) + 1);
-    width: fit-content;
+    /* width: fit-content; */
+    display: flex;
+    align-items: center;
   }
 
   .schedule-times__time {
     position: relative;
   }
 
-  .schedule-times__time:last-child {
-    text-align: right;
+  .schedule-time-outer:last-child {
+    align-items: flex-end;
+    width: fit-content;
   }
 
   .dotted-line {
-    position: absolute;
     top: 50%;
-    left: calc(var(--start) + 8px);
-    width: calc(var(--end) - var(--start) - 16px);
+
     height: 3px;
     background: none;
-    border-top: 3px dotted red;
-    transform: translateY(-50%);
+    border-top: 3px dotted black;
+    height: 3px;
+    width: -webkit-fill-available;
+    margin: 0 8px;
   }
 </style>

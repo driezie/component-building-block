@@ -5,7 +5,7 @@ export async function load() {
   const day = `${API}mh_day`;
 
   // Test vanaf 07 - 11
-  const date = "2024-10-07";
+  const date = "2024-10-11";
 
   const filter = `?filter[date]=${date}&sort=shows.mh_shows_id.from&fields=
     shows.mh_shows_id.show.name,
