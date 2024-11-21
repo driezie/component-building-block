@@ -161,6 +161,17 @@
     border-radius: 999999px;
   }
 
+  .schedule-line::after {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: #0091ff;
+  }
+
   .schedule-line span {
     position: absolute;
     top: -1rem;

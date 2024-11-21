@@ -4,6 +4,7 @@
 -->
 <div class="schedule-times">
   {#each Array(24) as _, i}
+    <!-- style="--start: {i * 50}; --end: {i * 50 + 50};" -->
     <div
       class="schedule-time-outer"
       style="--start: {i * 50}; --end: {i * 50 + 50};"
@@ -43,14 +44,18 @@
     position: relative;
   }
 
+  /* Last item will be a little bigger because it ends on 23:59 */
+  .schedule-time-outer:nth-last-child(2) {
+    grid-column-end: calc(var(--end) + 11);
+  }
+
   .schedule-time-outer:last-child {
     align-items: flex-end;
-    width: fit-content;
+    grid-column-start: calc(var(--start) + 1 + 10);
   }
 
   .dotted-line {
     top: 50%;
-
     height: 3px;
     background: none;
     border-top: 3px dotted black;

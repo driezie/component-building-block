@@ -36,10 +36,22 @@
   style="--start:{start}; --end:{end}"
 >
   <picture class="image">
+    <source
+      srcset={imgSrc
+        ? `https://fdnd-agency.directus.app/assets/${imgSrc}?format=webp&height=96&width=96`
+        : "/path/to/default/image.jpg"}
+      alt={programName}
+    />
+    <source
+      srcset={imgSrc
+        ? `https://fdnd-agency.directus.app/assets/${imgSrc}?format=jpg&height=96&width=96`
+        : "/path/to/default/image.jpg"}
+      alt={programName}
+    />
     <img
       loading="lazy"
       src={imgSrc
-        ? `https://fdnd-agency.directus.app/assets/${imgSrc}`
+        ? `https://fdnd-agency.directus.app/assets/${imgSrc}?format=jpeg&height=96&width=96`
         : "/path/to/default/image.jpg"}
       alt={programName}
     />
