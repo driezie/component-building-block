@@ -8,6 +8,7 @@
 
   // data import
   export let data;
+  // let { data } = $props();
 
   function getImageSource(show) {
     const programShow = show.mh_shows_id.show;
@@ -82,23 +83,16 @@
 
   const updateScheduleLine = () => {
     const date = new Date();
-    const minutes = (100 / 60) * date.getMinutes();
-    const timeValue = date.getHours() * 100 + minutes;
+    const minutes = (100 / 60) * date.getMinutes(); // Convert minutes to time units
+    const timeValue = date.getHours() * 100 + minutes; // Current time in "HHMM" format
 
-    const totalColumns = Math.floor(2359 / 2.001953);
-    const gridPosition = (timeValue / 2359) * totalColumns * 3;
+    const totalColumns = Math.floor(2359 / 2.02); // Total number of grid columns
+    const gridPosition = (timeValue / 2359) * totalColumns; // Position in the grid
 
     const line = document.querySelector(".schedule-line");
     if (line) {
-      line.style.setProperty("--timepassed", `${gridPosition}px`);
+      line.style.setProperty("--timepassed", `${gridPosition * 3}px`); // Adjust to match column width (3px)
       line.style.display = "block";
-
-      // TODO: laat nog geen goeie tijd zien wat het daadwerkelijk is
-
-      // const lineSpan = line.querySelector("span");
-      // if (lineSpan) {
-      //   lineSpan.innerHTML = timeValue;
-      // }
     }
   };
 
@@ -109,7 +103,7 @@
 </script>
 
 <div class="schedule">
-  <div class="schedule-line"><span>now</span></div>
+  <div class="schedule-line"></div>
   <ScheduleTimes />
   {#if Object.keys(groupedShows).length > 0}
     {#each Object.entries(groupedShows) as [stationName, stationShows]}
@@ -147,66 +141,59 @@
     overflow: scroll;
     padding: 1rem;
     position: relative;
-  }
 
-  .schedule-line {
-    display: none;
-    --timepassed: 0px;
-    left: calc(150px + var(--timepassed));
-    top: 2rem;
-    position: absolute;
-    height: calc(100% - 3.5rem);
-    width: 2px;
-    background-color: #0091ff;
-    border-radius: 999999px;
-  }
-
-  .schedule-line::after {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    background: #0091ff;
-  }
-
-  .schedule-line span {
-    position: absolute;
-    top: -1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.75rem;
-    color: #0091ff;
-  }
-
-  .schedule__radio-station-row {
-    display: flex;
-    align-items: center;
-  }
-
-  .schedule__station-shows {
-    display: grid;
-    grid-template-columns: repeat(calc(2359 / 2.001953), 3px);
-  }
-
-  img {
-    width: 100px;
-    height: 100px;
-    margin-right: 1rem;
-    padding: 20px;
-  }
-
-  @media (min-width: 40em) {
-    .schedule {
+    @media (min-width: 40em) {
       padding: 2rem;
     }
   }
 
-  @media (prefers-reduced-motion) {
-    .schedule-line {
+  .schedule-line {
+    --timepassed: 0px;
+    background-color: #0091ff;
+    border-radius: 999999px;
+    display: none;
+    height: calc(100% - 3rem);
+    left: calc(150px + var(--timepassed));
+    position: absolute;
+    top: 2.8rem;
+    width: 2px;
+
+    @media (min-width: 40em) {
+      height: calc(100% - 5rem);
+      top: 3.5rem;
+    }
+
+    @media (prefers-reduced-motion) {
       display: none !important;
     }
+  }
+
+  .schedule-line::after {
+    background: #0091ff;
+    border-radius: 50%;
+    content: "";
+    height: 10px;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, -50%);
+    width: 10px;
+  }
+
+  .schedule__radio-station-row {
+    align-items: center;
+    display: flex;
+  }
+
+  .schedule__station-shows {
+    display: grid;
+    grid-template-columns: repeat(calc(2359 / 2.02), 3px);
+  }
+
+  img {
+    height: 100px;
+    margin-right: 1rem;
+    padding: 20px;
+    width: 100px;
   }
 </style>

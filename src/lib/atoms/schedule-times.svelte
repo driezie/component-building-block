@@ -25,19 +25,18 @@
 
 <style>
   .schedule-times {
-    position: relative;
-    margin-left: calc(100px + 20px);
     display: grid;
     grid-template-columns: repeat(calc(2359 / 2.001953), 3px);
+    margin-left: calc(100px + 20px);
+    position: relative;
   }
 
   .schedule-time-outer {
-    position: relative;
-    grid-column-start: calc(var(--start) + 1);
-    grid-column-end: calc(var(--end) + 1);
-    /* width: fit-content; */
-    display: flex;
     align-items: center;
+    display: flex;
+    grid-column-end: calc(var(--end) + 1);
+    grid-column-start: calc(var(--start) + 1);
+    position: relative;
   }
 
   .schedule-times__time {
@@ -55,12 +54,10 @@
   }
 
   .dotted-line {
-    top: 50%;
-    height: 3px;
-    background: none;
     border-top: 3px dotted black;
     height: 3px;
-    width: -webkit-fill-available;
     margin: 0 8px;
+    top: 50%;
+    width: -webkit-fill-available;
   }
 </style>

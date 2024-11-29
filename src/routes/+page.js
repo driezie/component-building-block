@@ -4,8 +4,21 @@ export async function load() {
   const API = 'https://fdnd-agency.directus.app/items/';
   const day = `${API}mh_day`;
 
-  // Test vanaf 07 - 11
-  const date = "2024-10-11";
+  const dates = [
+    "2024-10-07",
+    "2024-10-08",
+    "2024-10-09",
+    "2024-10-10",
+    "2024-10-11"
+  ];
+
+  // Function to pick a random date
+  const randomDate = (array) => {
+    const randomIndex = Math.floor(Math.random() * array.length);
+    return array[randomIndex];
+  };
+
+  const date = randomDate(dates);
 
   const filter = `?filter[date]=${date}&sort=shows.mh_shows_id.from&fields=
     shows.mh_shows_id.show.name,
