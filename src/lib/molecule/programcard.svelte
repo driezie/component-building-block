@@ -5,10 +5,13 @@
 
   // data import
   export let status = "";
-  export let imgSrc = "";
+  export let jdImgSrc = "";
+  export let thumbnailImgSrc = "";
   export let programName = "Unnamed Program";
+  export let description;
+
   export let time = "00:00 - 00:00";
-  export let programLink = "/";
+  export let programLink = "";
 
   // Time splitting
   let parts = time.split(" - ");
@@ -29,30 +32,65 @@
     updateStatus();
     setInterval(updateStatus, 60000);
   });
+
+  onMount(() => {
+    const popoverButton = document.querySelector(
+      `[popovertarget="popover-${programLink}"]`,
+    );
+    const popover = document.querySelector(`#popover-${programLink}`);
+    const closePopoverButton = popover?.querySelector(".close");
+
+    function togglePopover() {
+      popover.togglePopover();
+    }
+
+    if (popoverButton && popover) {
+      popoverButton.addEventListener("click", (e) => {
+        if (document.startViewTransition) {
+          console.log("startViewTransition open");
+          document.startViewTransition(togglePopover);
+        } else {
+          togglePopover();
+        }
+        e.preventDefault();
+      });
+
+      // close button
+      closePopoverButton.addEventListener("click", (e) => {
+        if (document.startViewTransition) {
+          console.log("startViewTransition close");
+          document.startViewTransition(togglePopover);
+        } else {
+          togglePopover();
+        }
+        e.preventDefault();
+      });
+    }
+  });
 </script>
 
-<a
+<button
   class="card {status}"
-  href={programLink}
-  style="--start:{start}; --end:{end}"
+  popovertarget="popover-{programLink}"
+  style="--start:{start}; --end:{end}; --vt:{programLink}"
 >
   <picture class="image">
     <source
-      srcset={imgSrc
-        ? `https://fdnd-agency.directus.app/assets/${imgSrc}?format=webp&height=96&width=96`
+      srcset={jdImgSrc
+        ? `https://fdnd-agency.directus.app/assets/${jdImgSrc}?format=webp&height=96&width=96`
         : "/path/to/default/image.jpg"}
       alt={programName}
     />
     <source
-      srcset={imgSrc
-        ? `https://fdnd-agency.directus.app/assets/${imgSrc}?format=jpg&height=96&width=96`
+      srcset={jdImgSrc
+        ? `https://fdnd-agency.directus.app/assets/${jdImgSrc}?format=jpg&height=96&width=96`
         : "/path/to/default/image.jpg"}
       alt={programName}
     />
     <img
       loading="lazy"
-      src={imgSrc
-        ? `https://fdnd-agency.directus.app/assets/${imgSrc}?format=jpeg&height=96&width=96`
+      src={jdImgSrc
+        ? `https://fdnd-agency.directus.app/assets/${jdImgSrc}?format=jpeg&height=96&width=96`
         : "/path/to/default/image.jpg"}
       alt={programName}
     />
@@ -97,14 +135,169 @@
       </div>
     </div>
   </article>
-</a>
+</button>
+
+<div
+  data-sveltekit-preload-data="hover"
+  class="popover"
+  popover
+  id="popover-{programLink}"
+  style="--vt:{programLink}"
+>
+  <div class="popover-card">
+    <picture class="image">
+      <source
+        srcset={thumbnailImgSrc
+          ? `https://fdnd-agency.directus.app/assets/${thumbnailImgSrc}?format=webp`
+          : "/path/to/default/image.jpg"}
+        alt={programName}
+      />
+      <source
+        srcset={thumbnailImgSrc
+          ? `https://fdnd-agency.directus.app/assets/${thumbnailImgSrc}?format=jpg`
+          : "/path/to/default/image.jpg"}
+        alt={programName}
+      />
+      <img
+        loading="lazy"
+        src={thumbnailImgSrc
+          ? `https://fdnd-agency.directus.app/assets/${thumbnailImgSrc}?format=jpeg`
+          : "/path/to/default/image.jpg"}
+        alt={programName}
+      />
+    </picture>
+
+    <input
+      type="button"
+      value="Close"
+      class="close"
+      popovertarget="popover-{programLink}"
+    />
+
+    <article class="content">
+      <div class="title-wrapper">
+        <h2>{programName}</h2>
+        <p>{@html description}</p>
+      </div>
+
+      <div class="events">
+        <div class="time-stamp">
+          <Clock data={tempstart} />
+          <span>{time}</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
 
 <style>
   :root {
     --calc: calc(2rem - 1rem);
   }
 
+  /* Popover */
+
+  [popover] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  [popover] .popover-card {
+    pointer-events: all;
+    border: none;
+    min-height: 100vh;
+    height: fit-content;
+    width: 100%;
+    overflow: hidden;
+    border-color: #fff;
+    background-color: #fafafa;
+
+    @media (min-width: 40em) {
+      min-height: auto;
+      border-style: solid;
+      border-width: 2px;
+      border-radius: 8px;
+      box-shadow: 0px 8px 16px rgba(30, 30, 30, 0.08);
+      min-height: 50vh;
+      width: 50vw;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  [popover] .popover-card .image {
+    overflow: hidden;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    @media (min-width: 40em) {
+      border-radius: 8px 8px 0 0;
+    }
+  }
+
+  [popover] .popover-card .image img {
+    width: 100%;
+    height: 30vh;
+    object-fit: cover;
+    background: #f8f8f8;
+  }
+
+  [popover] .popover-card .content {
+    padding: 1rem;
+  }
+
+  [popover] .popover-card .close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    padding: 0.5em 1.5em 0.5em 1.5em;
+    cursor: pointer;
+    transition: 0.1s ease;
+  }
+
+  [popover] .events {
+    margin-top: 0.5rem;
+  }
+
+  [popover] h2 {
+    color: #1e1e1e;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  [popover] p {
+    color: #5a5a5a;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  /* Card */
+
   .card {
+    --vt: "";
+    cursor: pointer;
+    align-items: center;
+    text-align: left;
+    font-size: inherit;
     background-color: #ffffff;
     border-color: #fff;
     border-radius: 8px;
@@ -158,7 +351,7 @@
     box-shadow: 0px 8px 16px rgba(30, 30, 30, 0.16);
   }
 
-  picture {
+  .card picture {
     align-items: center;
     display: flex;
     justify-content: center;
@@ -186,7 +379,7 @@
     }
   }
 
-  img {
+  .card img {
     border-radius: 9999px;
     height: 48px;
     object-fit: cover;
